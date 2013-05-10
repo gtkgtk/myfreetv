@@ -1,0 +1,2 @@
+#!/bin/sh
+java -jar myfreetv2.jar

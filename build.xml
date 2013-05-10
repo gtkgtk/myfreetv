@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<project name="myfreetv2" default="deploy">
+
+	<property name="project.name" value="${ant.project.name}" />
+
+	<property name="license.file" value="license.txt" />
+
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="bin" />
+	<property name="dist.dir" value="dist" />
+	<property name="doc.dir" value="doc" />
+	<property name="lib.dir" value="lib" />
+	<property name="plafdesc.dir" value="plafdesc" />
+	<property name="outside.dir" value="outside" />
+	<property name="main.class" value="org.rom.myfreetv.view.MyFreeTV" />
+	<manifestclasspath property="lib.list" jarfile="${project.name}.jar">
+		<classpath>
+			<fileset dir="${lib.dir}" includes="*.jar" />
+		</classpath>
+	</manifestclasspath>
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="*.jar" />
+		<pathelement path="${outside.dir}" />
+	</path>
+
+	<target name="clean" description="Clean the project">
+		<delete dir="${build.dir}" failonerror="false"/>
+		<delete dir="${dist.dir}" failonerror="false"/>
+		<delete dir="${doc.dir}" failonerror="false"/>
+	</target>
+
+	<target name="compile" description="Compile the project">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath" encoding="utf8" fork="true" debug="true" includeantruntime="true" />
+	</target>
+
+	<target name="jar" description="JAR the project" depends="compile">
+		<mkdir dir="${dist.dir}" />
+		<jar destfile="${dist.dir}/${project.name}.jar" basedir="${build.dir}" compress="true">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="${main.class}" />
+				<attribute name="Class-Path" value=". ${lib.dir} ${lib.list}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="deploy" description="Deploy the project" depends="clean,jar">
+		<copy todir="${dist.dir}/${lib.dir}">
+			<fileset dir="${lib.dir}" />
+		</copy>
+		<copy todir="${dist.dir}">
+			<fileset dir="${outside.dir}" />
+		</copy>
+		<copy todir="${dist.dir}" file="${license.file}" />
+	</target>
+
+	<target name="run" description="Run the JAR" depends="deploy">
+		<java dir="${dist.dir}" jar="${dist.dir}/${project.name}.jar" fork="true">
+			<jvmarg value="-ea" />
+		</java>
+	</target>
+
+	<target name="javadoc" description="Javadoc">
+		<mkdir dir="${doc.dir}" />
+		<javadoc sourcepath="${src.dir}" packagenames="*" destdir="${doc.dir}" classpathref="classpath" link="http://java.sun.com/javase/6/docs/api" encoding="utf8" />
+	</target>
+
+	<target name="all" description="All" depends="deploy,javadoc" />
+
+</project>

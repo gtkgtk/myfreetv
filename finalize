@@ -1,0 +1,6 @@
+#!/bin/sh
+cd dist
+chmod +x myfreetv
+chown root: *
+tar cjf ../myfreetv2.tar.bz2 *
+cd -
