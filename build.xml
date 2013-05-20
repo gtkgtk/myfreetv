@@ -12,6 +12,8 @@
 	<property name="lib.dir" value="lib" />
 	<property name="plafdesc.dir" value="plafdesc" />
 	<property name="outside.dir" value="outside" />
+	<property name="img_debug.dir" value="${build.dir}/img" />
+	<property name="img.dir" value="${outside.dir}/img" />
 	<property name="main.class" value="org.rom.myfreetv.view.MyFreeTV" />
 	<manifestclasspath property="lib.list" jarfile="${project.name}.jar">
 		<classpath>
@@ -53,6 +55,9 @@
 		<copy todir="${dist.dir}">
 			<fileset dir="${outside.dir}" />
 		</copy>
+		<copy todir="${img_debug.dir}">
+			<fileset dir="${img.dir}" />
+		</copy>
 		<copy todir="${dist.dir}" file="${license.file}" />
 	</target>
 
@@ -64,7 +69,7 @@
 
 	<target name="javadoc" description="Javadoc">
 		<mkdir dir="${doc.dir}" />
-		<javadoc sourcepath="${src.dir}" packagenames="*" destdir="${doc.dir}" classpathref="classpath" link="http://java.sun.com/javase/6/docs/api" encoding="utf8" />
+		<javadoc sourcepath="${src.dir}" packagenames="*" destdir="${doc.dir}" classpathref="classpath" link="http://docs.oracle.com/javase/7/docs/api/" encoding="utf8" />
 	</target>
 
 	<target name="all" description="All" depends="deploy,javadoc" />
