@@ -138,6 +138,10 @@ public class Actions {
         new ProgAddDialog(owner, channel);
     }
 
+    public void prog(Emission emission) {
+        new ProgAddDialog(owner, emission);
+    }
+
     private void echec() {
         String s = "L'action n'a pas pu être effectuée.\nIl y a eu un problème de communication avec VLC.";
         if(Config.getInstance().isEmbedded())

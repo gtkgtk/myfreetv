@@ -28,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import org.jdesktop.swingx.JXDatePicker;
 import org.rom.myfreetv.config.Config;
 import org.rom.myfreetv.files.FileUtils;
+import org.rom.myfreetv.guidetv.Emission;
 import org.rom.myfreetv.process.HebdoProgramRules;
 import org.rom.myfreetv.process.OnceProgramRules;
 import org.rom.myfreetv.process.Program;
@@ -40,9 +41,9 @@ import org.rom.myfreetv.streams.ChannelManager;
 import org.rom.myfreetv.streams.RadioChannel;
 
 class ProgAddDialog extends JDialog implements ActionListener {
-
+    
     private static DateFormat formatter = new SimpleDateFormat("EEE dd/MM/yyyy");
-
+    
     private MyFreeTV owner;
     private ChannelComboBox channels;
     private JRadioButton once, hebdo;
@@ -62,7 +63,7 @@ class ProgAddDialog extends JDialog implements ActionListener {
         super(owner, "Programmation", true);
         this.owner = owner;
         setResizable(false);
-
+        
 //        SkinManager.decore(this,Config.getInstance().getDecoration());
 
         Point p = owner.getLocation();
@@ -258,6 +259,12 @@ class ProgAddDialog extends JDialog implements ActionListener {
         setVisible(true);
     }
 
+    public ProgAddDialog(MyFreeTV owner, Emission emission) {
+        this(owner);
+        init(emission);
+        setVisible(true);
+    }
+
     private void init(Channel channel) {
         channels.setSelectedIndex(ChannelManager.getInstance().getChannels().indexOf(channel));
 
@@ -347,6 +354,53 @@ class ProgAddDialog extends JDialog implements ActionListener {
         initButtons();
     }
 
+    private void init(Emission emission) {
+        channels.setSelectedIndex(ChannelManager.getInstance().getChannels().indexOf(emission.getChannel()));
+
+        once.setSelected(true);
+
+        startDate.setDate(emission.getStart().getTime());
+        startTime.setValue(emission.getStart().getTime());
+        stopTime.setValue(emission.getEnd().getTime());
+        
+        int day = emission.getStart().get(Calendar.DAY_OF_WEEK);
+        lundi.setSelected(day == Calendar.MONDAY);
+        mardi.setSelected(day == Calendar.TUESDAY);
+        mercredi.setSelected(day == Calendar.WEDNESDAY);
+        jeudi.setSelected(day == Calendar.THURSDAY);
+        vendredi.setSelected(day == Calendar.FRIDAY);
+        samedi.setSelected(day == Calendar.SATURDAY);
+        dimanche.setSelected(day == Calendar.SUNDAY);
+        
+        boolean hasAutoPath = job == null && Config.getInstance().getAutoPath().isEnabled();
+        auto.setSelected(false);
+        auto.setEnabled(hasAutoPath);
+        
+        String filename = emission.getTitle().replaceAll("[\\\\/:,'!°()\\*\\?\"\\<\\>\\|]"," ");
+        if (emission.getSubtitle()!=null)
+        	filename += "-"+emission.getSubtitle().replaceAll("[\\\\/:,'!°()\\*\\?\"\\<\\>\\|]"," ");
+        // une fois qu'on a les caracteres autorisés, supprimer les espaces et les remplacer par la 1ère lettre en majuscule
+        String filewords[] = filename.split(" ");
+        String newfilename = "";
+        for (int i=0; i< filewords.length; i++)
+        {
+        	if (!filewords[i].isEmpty())
+        	{
+	        	String tempstring=filewords[i].substring(0, 1);
+	        	tempstring=tempstring.toUpperCase();
+	        	tempstring+=filewords[i].substring(1);
+	        	newfilename+=tempstring;
+        	}
+        }
+        
+        if(newfilename.length() > 50)
+        	newfilename = newfilename.substring(0,50);
+        
+        filePath.setText(Config.getInstance().getAutoPath().getUrl() + File.separatorChar + newfilename + ".mpg");
+
+        initButtons();
+    }
+
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
         Channel channel = job == null ? ChannelManager.getInstance().getChannels().get(channels.getSelectedIndex()) : job.getStream().getChannel();
@@ -373,7 +427,7 @@ class ProgAddDialog extends JDialog implements ActionListener {
                     if(job == null) {
                         start = Calendar.getInstance();
                         Calendar std = new GregorianCalendar();
-                        std.setTimeInMillis(startDate.getDate().getTime());
+                        //std.setTimeInMillis(startDate.getDate().getTime());
                         Calendar stt = startTime.getCalendar();
                         start = new GregorianCalendar(std.get(Calendar.YEAR), std.get(Calendar.MONTH), std.get(Calendar.DAY_OF_MONTH), stt.get(Calendar.HOUR_OF_DAY), stt.get(Calendar.MINUTE));
                         if(auto.isSelected())
@@ -391,7 +445,7 @@ class ProgAddDialog extends JDialog implements ActionListener {
                         			file = new File(filePath.getText()+".mpg");
                         	}
                         }
-                          // file = owner.generateFile(start,channel,false);
+                        // file = owner.generateFile(start,channel,false);
                     } else {
                         start = Calendar.getInstance();
                         file = new File(job.getUrlOutput());

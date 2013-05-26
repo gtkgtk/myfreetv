@@ -9,7 +9,7 @@ import java.util.Properties;
 import org.rom.myfreetv.view.MyFreeTV;
 
 public class Config {
-
+    
     private final static File PREF_DIR = new File(System.getProperty("user.home") + "/.myfreetv2");
     static {
         if(!PREF_DIR.exists()) {
@@ -20,6 +20,7 @@ public class Config {
     private final static String config = new File(PREF_DIR, "config.xml").getAbsolutePath();
     public final static File FAVORIS_FILE = new File(PREF_DIR, "favoris.m3u");
     public final static String PROGRAMMATION_FILENAME = new File(PREF_DIR, "prog.dat").getAbsolutePath();
+    public final static String TVGUIDE_FILENAME = new File(PREF_DIR, "tvguide.xml").getAbsolutePath();
 
     private final static String VLC_PATH = "vlc_path";
     private final static String CURRENT_PATH = "current_path";
@@ -38,13 +39,16 @@ public class Config {
     private final static String FW_WIDTH = "fw_width";
     private final static String FW_HEIGHT = "fw_height";
     private final static String DECORATION = "decoration";
-//    private final static String PLAF = "plaf";
-//    private final static String THEMEPACK = "themepack";
+    private final static String KAZERURL = "kazer_url";
+    private final static String KAZERURL_ENABLED = "kazer_url_enabled";
+    private final static String KAZERFILE_DATE = "kazer_file_date";
 
     private static Config instance;
     private final static String osName = System.getProperty("os.name").toLowerCase();
 
     private String vlcPath;
+    private AutoPath kazerPath;
+    private String kazerFileDate;
     private String currentPath;
     private boolean embedded = true;
     private DeinterlaceMode deinterlace;
@@ -104,6 +108,18 @@ public class Config {
         return autoPath;
     }
 
+    public AutoPath getKazerPath() {
+        return kazerPath;
+    }
+
+    public String getKazerFileDate() {
+        return kazerFileDate;
+    }
+
+    public void setKazerFileDate(String Date) {
+    	this.kazerFileDate=Date;
+    }
+
     public boolean getCheckUpdate() {
         return checkUpdate;
     }
@@ -139,7 +155,7 @@ public class Config {
     public int getFWHeight() {
         return fw_height;
     }
-
+    
     public boolean getDecoration() {
         return decoration;
     }
@@ -200,7 +216,7 @@ public class Config {
     public void setFWHeight(int fw_height) {
         this.fw_height = fw_height;
     }
-
+    
     public void setDecoration(boolean decoration) {
         this.decoration = decoration;
     }
@@ -230,6 +246,21 @@ public class Config {
             autoPathEnabled = false;
         }
         autoPath = new AutoPath(autoPathEnabled, properties.getProperty(AUTO_PATH));
+
+        boolean kazerurlEnabled;
+        try {
+        	kazerurlEnabled = Boolean.parseBoolean(properties.getProperty(KAZERURL_ENABLED));
+        } catch(Exception e) {
+        	kazerurlEnabled = false;
+        }
+        kazerPath = new AutoPath(kazerurlEnabled, properties.getProperty(KAZERURL));
+        
+        kazerFileDate=properties.getProperty(KAZERFILE_DATE);
+        if(kazerFileDate == null)
+        {
+        	kazerFileDate = "0000000000000";        	
+        }
+        
         String checkUpdateString = properties.getProperty(CHECK_UPDATE);
         if(checkUpdateString != null) {
             checkUpdate = Boolean.parseBoolean(checkUpdateString);
@@ -270,7 +301,6 @@ public class Config {
         if(deco != null) {
             decoration = Boolean.parseBoolean(deco);
         }
-
         if(vlcPath == null) {
             if(isWindowsOS())
                 vlcPath = "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe";
@@ -296,6 +326,9 @@ public class Config {
         properties.put(MUX_MODE, mux.getName());
         properties.put(AUTO_PATH_ENABLED, "" + autoPath.isEnabled());
         properties.put(AUTO_PATH, autoPath.getUrl());
+        properties.put(KAZERURL_ENABLED, "" + kazerPath.isEnabled());
+        properties.put(KAZERURL, kazerPath.getUrl());
+        properties.put(KAZERFILE_DATE, kazerFileDate);
         properties.put(CHECK_UPDATE, "" + checkUpdate);
         properties.put(HORIZONTAL_LOCATION, "" + horizontalLocation);
         properties.put(VERTICAL_LOCATION, "" + verticalLocation);

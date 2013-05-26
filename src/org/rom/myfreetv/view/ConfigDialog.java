@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -13,7 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -22,14 +24,14 @@ import org.rom.myfreetv.config.Config;
 import org.rom.myfreetv.config.DeinterlaceMode;
 import org.rom.myfreetv.config.MuxMode;
 import org.rom.myfreetv.files.FileUtils;
-import org.rom.myfreetv.player.ExternVLC;
+//import org.rom.myfreetv.player.ExternVLC;
 
 class ConfigDialog extends JDialog implements ActionListener {
 
     private MyFreeTV owner;
-    private JTextField vlcTextField, autoTextField;
+    private JTextField vlcTextField, autoTextField, kazerTextField;
     private JButton autoBut;
-    private JCheckBox auto, embedded, checkUpdate;
+    private JCheckBox auto, embedded, checkUpdate, kazerEnable;
     private JRadioButton ts, ps;
     private DeinterlaceComboBox deint;
 
@@ -40,7 +42,7 @@ class ConfigDialog extends JDialog implements ActionListener {
         super(owner, "Configuration", true);
         this.owner = owner;
         setResizable(false);
-
+        
 //        SkinManager.decore(this,Config.getInstance().getDecoration());
 
         Point p = owner.getLocation();
@@ -88,6 +90,19 @@ class ConfigDialog extends JDialog implements ActionListener {
         autoPan.add(autoTextField);
         autoPan.add(autoBut);
 
+        JPanel kazerPan = new JPanel();
+        kazerEnable = new JCheckBox("Kazer URL pour guide TV :");
+        kazerEnable.setSelected(Config.getInstance().getKazerPath().isEnabled());
+        kazerEnable.setToolTipText("Ouvrir un compte sur http://www.kazer.org, puis choisir sa liste de programmes, puis recopier l'URL (non zippée) dans la zone texte");
+        kazerEnable.setActionCommand("kazer");
+        kazerEnable.addActionListener(this);
+
+        kazerTextField = new JTextField(20);
+        kazerTextField.setText(Config.getInstance().getKazerPath().getUrl());
+
+        kazerPan.add(kazerEnable);
+        kazerPan.add(kazerTextField);
+
         JPanel muxPan = new JPanel();
         ButtonGroup bg = new ButtonGroup();
         ts = new JRadioButton("MPEG-TS");
@@ -118,6 +133,7 @@ class ConfigDialog extends JDialog implements ActionListener {
         JPanel pan = new JPanel();
         pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
 //        pan.add(vlcPan);
+        pan.add(kazerPan);
         pan.add(autoPan);
         pan.add(muxPan);
         pan.add(deinterlacePan);
@@ -165,19 +181,35 @@ class ConfigDialog extends JDialog implements ActionListener {
             if(filename != null) {
                 autoTextField.setText(filename);
             }
+        } else if(s.equals("kazer")) {
+            initButtons();
         } else if(s.equals("auto")) {
             initButtons();
         } else if(s.equals("ok")) {
             DeinterlaceMode deintAtEnd = DeinterlaceMode.getDeinterlaceMode((String) deint.getSelectedItem());
-            boolean embeddedAtEnd = embedded.isSelected();
+            if (Config.getInstance().isEmbedded())
+            {
+            	boolean embeddedAtEnd = embedded.isSelected();
+                Config.getInstance().setEmbedded(embeddedAtEnd);
+            }
             Config.getInstance().setVlcPath(vlcTextField.getText());
             Config.getInstance().getAutoPath().setEnabled(auto.isSelected());
             Config.getInstance().getAutoPath().setUrl(autoTextField.getText());
-            Config.getInstance().setMuxMode(ts.isSelected() ? MuxMode.TS : MuxMode.PS);
+            Config.getInstance().getKazerPath().setUrl(kazerTextField.getText());
+		    try {
+				   URL adresse = new URL(Config.getInstance().getKazerPath().getUrl());
+				   InputStream stream = adresse.openStream();
+				   Config.getInstance().getKazerPath().setEnabled(kazerEnable.isSelected());
+		    } catch (Exception e1)
+		    {
+       		    System.out.println("Bad URL ("+Config.getInstance().getKazerPath().getUrl()+") for tvguide database :\nEnter a valid kazer url in Config panel shall be http://www.kazer.org/tvguide.xml?u=xxxxxxx");
+				Config.getInstance().getKazerPath().setEnabled(false);
+		    }
+	        Config.getInstance().setMuxMode(ts.isSelected() ? MuxMode.TS : MuxMode.PS);
             Config.getInstance().setDeinterlaceMode(deintAtEnd);
-            Config.getInstance().setEmbedded(embeddedAtEnd);
             Config.getInstance().setCheckUpdate(checkUpdate.isSelected());
             Config.getInstance().saveProperties();
+            owner.ActivateTvGuide(Config.getInstance().getKazerPath().isEnabled());
             owner.initButtons();
             dispose();
         } else if(s.equals("cancel")) {
@@ -188,6 +220,7 @@ class ConfigDialog extends JDialog implements ActionListener {
     private void initButtons() {
         autoBut.setEnabled(auto.isSelected());
         autoTextField.setEnabled(auto.isSelected());
+        kazerTextField.setEnabled(kazerEnable.isSelected());
     }
 
 }

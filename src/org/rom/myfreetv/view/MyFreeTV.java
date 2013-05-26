@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.rom.myfreetv.config.Config;
 import org.rom.myfreetv.files.RecordFileManager;
+import org.rom.myfreetv.guidetv.GuideTVManager;
 import org.rom.myfreetv.process.JobManager;
 import org.rom.myfreetv.process.ProgramManager;
 import org.rom.myfreetv.process.RecordJob;
@@ -46,11 +47,11 @@ import org.rom.myfreetv.update.Updater;
 public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, ListSelectionListener, Observer {
 
     public final static String name = "MyFreeTV";
-    public final static String version = "2.30 beta 1";
+    public final static String version = "2.30 beta 3 - PGU - KAZER Enabled";
     public final static String url = "https://github.com/gtkgtk/myfreetv";
     public final static String mail = "rom1v@yahoo.fr";
 
-    // private static enum Plaf {
+    //private static enum Plaf {
     // SYSTEM, JRE, PGS, SKIN
     // }
 
@@ -60,9 +61,9 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     private static MyFreeTV instance;
     // private static NumberFormat formatter = new DecimalFormat("00");
 
-    // private boolean decoration;
+    //private boolean decoration;
     private Actions actions;
-    // private SkinManager skinManager;
+    //private SkinManager skinManager;
 
     private ChannelPanel channelsPanel;
     private PlayPanel playPanel;
@@ -72,8 +73,8 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     private JPanel vlcPanel, mftPanel;
     //private AudiencePanel audiencePanel;
     private FilePanel filePanel;
-    // à re-implementer + tard :(
-    // private GuideTVPanel guideTVPanel;
+    private GuideTVPanel guideTVPanel;
+    private boolean GuideTvVisible;
     private FreePlayerPanel freeplayerPanel;
     private LogoViewer logoViewer;
     private JCheckBox alwaysOnTop;
@@ -99,18 +100,18 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         actions = new Actions(this);
-        // skinManager = new SkinManager(this);
+        //skinManager = new SkinManager(this);
 
         // skinManager.setPlaf(Config.getInstance().getPlaf());
         // ((SkinPlaf)Plaf.SKIN).setThemepack(Config.getInstance().getThemepack());
 
         // this.decoration = decoration;
         // if(Config.getInstance().getDecoration()) {
-        // setDefaultLookAndFeelDecorated(false);
-        // getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.FRAME);
-        // setUndecorated(true);
+        //     setDefaultLookAndFeelDecorated(false);
+        //     getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.FRAME);
+        //     setUndecorated(true);
         // }
-        //
+       
         addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent e) {
@@ -185,8 +186,8 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         filePanel = new FilePanel(this);
         // PGU : le site ne fonctionne plus
         //audiencePanel = new AudiencePanel(this);
-        // à re-implementer + tard :(
-        // guideTVPanel = new GuideTVPanel(this);
+        if (Config.getInstance().getKazerPath().isEnabled())
+        	guideTVPanel = new GuideTVPanel(this);
         freeplayerPanel = new FreePlayerPanel(this);
         logoViewer = new LogoViewer(150, 80);
 
@@ -215,10 +216,15 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         tab.addTab("Fichiers", ImageManager.getInstance().getImageIcon("file_rename"), filePanel);
         // PGU : le site http://audience.free.fr/ ne fonctionne plus
         //tab.addTab("Audience", ImageManager.getInstance().getImageIcon("audience"), audiencePanel);
-        // à re-implementer + tard :(
-        // tab.addTab("Guide TV",
-        // ImageManager.getInstance().getImageIcon("guidetv"), guideTVPanel);
-//        tab.addTab("Écran", ImageManager.getInstance().getImageIcon("screen"), vlcPanel);
+        if (Config.getInstance().getKazerPath().isEnabled())
+        {
+	        tab.addTab("Guide TV",
+	        ImageManager.getInstance().getImageIcon("guidetv"), guideTVPanel);
+	        GuideTvVisible = true;
+        }
+        else
+        	GuideTvVisible = false;
+        tab.addTab("Écran", ImageManager.getInstance().getImageIcon("screen"), vlcPanel);
         tab.addTab("FreePlayer", ImageManager.getInstance().getImageIcon("fpico"), freeplayerPanel);
         tab.addChangeListener(this);
 
@@ -245,7 +251,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         about.setToolTipText("À propos de " + name + ".");
         about.setActionCommand("about");
         about.addActionListener(this);
-//        southPanel.add(alwaysOnTop);
+        southPanel.add(alwaysOnTop);
 //        southPanel.add(shutdown);
         southPanel.add(vlc);
 //        southPanel.add(skin);
@@ -282,6 +288,8 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         ProgramManager.getInstance().addObserver(this);
         JobManager.getInstance().addObserver(this);
         RecordFileManager.getInstance().addObserver(this);
+        if (Config.getInstance().getKazerPath().isEnabled())
+        	GuideTVManager.getInstance().addObserver(this);
         ShutdownManager.getInstance().addObserver(this);
 
         ProgramManager.getInstance().runThread();
@@ -376,8 +384,9 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         // if(arg instanceof String && "program_hour".equals(arg)) {
         // progPanel.refresh();
         // }
-        // if("guidetv".equals(arg))
-        // updateGuideTVOnly();
+        if("guidetv".equals(arg))
+            if (Config.getInstance().getKazerPath().isEnabled())
+            	updateGuideTVOnly();
         // else if("shutdown".equals(arg))
         // prepareShutdown();
         // else
@@ -388,25 +397,25 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         return actions;
     }
 
-    // public SkinManager getSkinManager() {
-    // return skinManager;
-    // }
+    //public SkinManager getSkinManager() {
+    //   return skinManager;
+    //}
 
-    public void reloadSkin() {
-        // new Thread() {
-        //
-        // public void run() {
-        // // try { Thread.sleep(1000); } catch(InterruptedException e) {}
+    //public void reloadSkin() {
+    //    new Thread() {
+//
+  //          public void run() {
+    //            // try { Thread.sleep(1000); } catch(InterruptedException e) {}
+    //            dialog = new SkinChooserDialog(MyFreeTV.this);
+     //           dialog.setVisible(true);
+    //            dialog = null;
+     //       }
+    //    }.start();
         // dialog = new SkinChooserDialog(MyFreeTV.this);
         // dialog.setVisible(true);
         // dialog = null;
-        // }
-        // }.start();
-        // dialog = new SkinChooserDialog(MyFreeTV.this);
-        // dialog.setVisible(true);
-        // dialog = null;
-        setVisible(true);
-    }
+     //   setVisible(true);
+    //}
 
     public JDialog getDialog() {
         return dialog;
@@ -533,8 +542,8 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         Channel chan = (selected >= 0) ? ChannelManager.getInstance().getChannels().get(selected) : null;
         logoViewer.setLogo(chan);
         // à re-implementer + tard :(
-        // if(isGuideTVVisible())
-        // guideTVPanel.refresh();
+        if(isGuideTVVisible())
+           guideTVPanel.refresh();
         initButtons();
     }
 
@@ -545,7 +554,8 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         progPanel.initButtons();
         //audiencePanel.initButtons();
         // à re-implementer + tard :(
-        // guideTVPanel.initButtons();
+        if (Config.getInstance().getKazerPath().isEnabled())
+        	guideTVPanel.initButtons();
         freeplayerPanel.initButtons();
         // if(vlc != null)
         // vlc.initButtons();
@@ -571,18 +581,17 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         recordPanel.update();
         progPanel.update();
         filePanel.update();
-        // à re-implementer + tard :(
-        // guideTVPanel.refresh();
+        if (Config.getInstance().getKazerPath().isEnabled())
+        	guideTVPanel.refresh();
         freeplayerPanel.update();
         initButtons();
     }
 
-    // private void updateGuideTVOnly() {
-    // channelsPanel.getChannelsList().getModel().refresh();
-    // //à re-implementer + tard :(
-    // //guideTVPanel.refresh();
-    // initButtons();
-    // }
+    private void updateGuideTVOnly() {
+    	channelsPanel.getChannelsList().getModel().refresh();
+       	guideTVPanel.refresh();
+    	initButtons();
+    }
     //  
     // private void prepareShutdown() {
     // new ShutdownWaiter(20000);
@@ -591,15 +600,15 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
 
     public void stateChanged(ChangeEvent e) {
         int ind = tab.getSelectedIndex();
-        // if (ind == tab.indexOfComponent(audiencePanel) && !audiencePanel.isRefreshed())
+        //if (ind == tab.indexOfComponent(audiencePanel) && !audiencePanel.isRefreshed())
         //    audiencePanel.refresh();
         //else 
         if (ind == tab.indexOfComponent(filePanel))
             filePanel.initMoAndRefresh();
         // à re-implementer + tard :(
-        // else if(ind == tab.indexOfComponent(guideTVPanel))
-        // guideTVPanel.refresh();
-        // filePanel.refreshOnlyValues();
+        else if (Config.getInstance().getKazerPath().isEnabled())
+        	if(ind == tab.indexOfComponent(guideTVPanel))
+        		guideTVPanel.refresh();
     }
 
     // public void menuItemSelected(SysTrayMenuEvent e) {
@@ -723,7 +732,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         return tab;
     }
 
-	// PGU : le site http://audience.free.fr/ ne fonctionne plus
+    // PGU : le site http://audience.free.fr/ ne fonctionne plus
     //public boolean isAudiencePanelVisible() {
     //    return tab.getSelectedComponent() == audiencePanel;
     //}
@@ -741,9 +750,33 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     }
 
     public boolean isGuideTVVisible() {
-        return false;
-        // à re-implementer + tard :(
-        // return tab.getSelectedComponent() == guideTVPanel;
+        return tab.getSelectedComponent() == guideTVPanel;
+    }
+    
+    public void ActivateTvGuide(boolean isEnabled)
+    {
+    	if (GuideTvVisible && !isEnabled)
+    	{
+    		// remove the tv guide tab
+    		tab.remove(guideTVPanel);
+    		GuideTvVisible=false;
+    	}
+    	else
+    	{
+    		if (!GuideTvVisible && isEnabled)
+    		{
+    			if (guideTVPanel== null)
+    			{
+    				guideTVPanel = new GuideTVPanel(this);
+    		        GuideTVManager.getInstance().addObserver(this);
+    			}
+
+    			tab.addTab("Guide TV",
+    	    	        ImageManager.getInstance().getImageIcon("guidetv"), guideTVPanel);
+        		GuideTvVisible=true;   			
+    		}
+    	}
+    	
     }
 
     Channel getSelectedChannel() {

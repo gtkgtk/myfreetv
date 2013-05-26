@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tv>
+  <!-- offset : 1, DST : 1 -> +0100 -->
+  <channel free-id="039">
+    <display-name>AB1</display-name>
+    <kazer id="AB11.kazer.org" />
+  </channel>
+  <channel free-id="007">
+    <display-name>ARTE</display-name>
+    <kazer id="ART1.kazer.org" />
+  </channel>
+  <channel free-id="015">
+    <display-name>BFM TV</display-name>
+    <kazer id="BFM1.kazer.org" />
+  </channel>
+  <channel free-id="004">
+    <display-name>CANAL+</display-name>
+    <kazer id=".kazer.org" />
+  </channel>
+  <channel free-id="025">
+    <display-name>CHERIE HD</display-name>
+    <kazer id="CHE1.kazer.org" />
+  </channel>
+  <channel free-id="013">
+    <display-name>LCP</display-name>
+    <kazer id="LAC1.kazer.org" />
+  </channel>
+  <channel free-id="035">
+    <display-name>CINE FX</display-name>
+    <kazer id="CIN1.kazer.org" />
+  </channel>
+  <channel free-id="034">
+    <display-name>CINE POLAR</display-name>
+    <kazer id="CIN2.kazer.org" />
+  </channel>
+  <channel free-id="163">
+    <display-name>DEMAIN.TV</display-name>
+    <kazer id="DEM2.kazer.org" />
+  </channel>
+  <channel free-id="008">
+    <display-name>Direct 8</display-name>
+    <kazer id="DIR1.kazer.org" />
+  </channel>
+  <channel free-id="017">
+    <display-name>DIRECT STAR</display-name>
+    <kazer id="EUR2.kazer.org" />
+  </channel>
+  <channel free-id="002">
+    <display-name>FRANCE 2</display-name>
+    <kazer id="FRA2.kazer.org" />
+  </channel>
+  <channel free-id="002">
+    <display-name>FRANCE 2 HD</display-name>
+    <kazer id="FRA36.kazer.org" />
+  </channel>
+  <channel free-id="095">
+    <display-name>France 24</display-name>
+    <kazer id="FRA16.kazer.org" />
+  </channel>
+  <channel free-id="003">
+    <display-name>FRANCE 3</display-name>
+    <kazer id="FRA3.kazer.org" />
+  </channel>
+  <channel free-id="014">
+    <display-name>FRANCE 4</display-name>
+    <kazer id="FRA4.kazer.org" />
+  </channel>
+  <channel free-id="005">
+    <display-name>FRANCE 5</display-name>
+    <kazer id="FRA5.kazer.org" />
+  </channel>
+  <channel free-id="019">
+    <display-name>FRANCE O</display-name>
+    <kazer id="FRA1.kazer.org" />
+  </channel>
+  <channel free-id="018">
+    <display-name>GULLI</display-name>
+    <kazer id="GUL1.kazer.org" />
+  </channel>
+  <channel free-id="020">
+    <display-name>HD1</display-name>
+    <kazer id="HD1.kazer.org" />
+  </channel>
+  <channel free-id="016">
+    <display-name>I&gt;TELE</display-name>
+    <kazer id="ITL1.kazer.org" />
+  </channel>
+  <channel free-id="021">
+    <display-name>L EQUIPE 21</display-name>
+    <kazer id="LEQ1.kazer.org" />
+  </channel>
+  <channel free-id="006">
+    <display-name>M6</display-name>
+    <kazer id="M61.kazer.org" />
+  </channel>
+  <channel free-id="006">
+    <display-name>M6 HD</display-name>
+    <kazer id="M63.kazer.org" />
+  </channel>
+  <channel free-id="012">
+    <display-name>NRJ 12</display-name>
+    <kazer id="NRJ1.kazer.org" />
+  </channel>
+  <channel free-id="011">
+    <display-name>NT1</display-name>
+    <kazer id="NT11.kazer.org" />
+  </channel>
+  <channel free-id="023">
+    <display-name>NUMERO 23</display-name>
+    <kazer id="NU23.kazer.org" />
+  </channel>
+  <channel free-id="026">
+    <display-name>PARIS PREMIERE</display-name>
+    <kazer id="PAR1.kazer.org" />
+  </channel>
+  <channel free-id="024">
+    <display-name>RMC DECOUVERTE</display-name>
+    <kazer id="RMC2.kazer.org" />
+  </channel>
+  <channel free-id="028">
+    <display-name>RTL9</display-name>
+    <kazer id="RTL2.kazer.org" />
+  </channel>
+  <channel free-id="001">
+    <display-name>TF1</display-name>
+    <kazer id="TF11.kazer.org" />
+  </channel>
+  <channel free-id="010">
+    <display-name>TMC</display-name>
+    <kazer id="TMC1.kazer.org" />
+  </channel>
+  <channel free-id="009">
+    <display-name>W9</display-name>
+    <kazer id="W91.kazer.org" />
+  </channel>
+  <channel free-id="038">
+    <display-name>VIVOLTA</display-name>
+    <kazer id="VIV1.kazer.org" />
+  </channel>
+  <channel free-id="079">
+    <display-name>TV5 MONDE</display-name>
+    <kazer id="TV51.kazer.org" />
+  </channel>
+</tv>
+
