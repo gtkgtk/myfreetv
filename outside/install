@@ -1,0 +1,3 @@
+mkdir /usr/local/share/myfreeTV
+cp -r ./* /usr/local/share/myfreeTV
+ln -sf /usr/local/share/myfreeTV/myfreetv /sbin/myfreetv

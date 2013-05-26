@@ -1,0 +1,47 @@
+Nouvelle version de myFreeTV basée sur la 2.30
+
+Contenu fonctionnel :
+=====================
+Liste des chaines TV
+Liste des chaines Radio
+Favoris
+Enregistrement des vidéos en mpg TS (y compris à partir du TV Guide)
+Enregistrement des radios en ogg.
+TV guide sur les chaines suivantes :
+FRANCE 2, FRANCE 3, FRANCE 4, FRANCE 5, D8, TMC, NT1, NRJ12, LCP, ITele, D17, ARTE, FRANCE O, L'EQUIPE21, NUMERO 23, RMC DECOUVERTE, AB1, BFM TV, CHERIE 25 HD, RTL9, LCP, VIVOLTA, TV5 MONDE, FRANCE 24
+
+Pour en rajouter d'autres, il faut modifier le fichier ListeChaines.xml et rajouter des balises :
+Exemple :
+  <channel free-id="163">			<----- ici, il faut mettre le numéro qui s'affiche à gauche de la chaine dans la liste
+    <display-name>DEMAIN.TV</display-name>	<----- ne sert à rien dans cette version (c'est le nom en clair de la chaine)
+    <kazer id="DEM2.kazer.org" />		<----- ici, il faut mettre l'id qui correspond dans le fichier tvguide.xml
+  </channel>
+
+Pour information, le fichier tvguide.xml est conservé en local dans le répertoire ~/.myfreetv2. Si la date de son contenu dépasse 3 jours, une nouvelle version est demandée au serveur de kazer. Dans le cas contraire, le contenu est récupéré dans le fichier local (qui contient jusqu'à 7 jours de guide TV).
+L'URL, l'affichage de l'onglet TV GUIDE ainsi que la date du contenu de tvguide.xml sont sauvegardées dans le fichier de configuration de myfreeTV (dans le répertoire ~/.myfreetv2/config.xml)
+
+Explications sur KAZER.ORG
+==========================
+Ce site permet de fournir à quiconque un fichier "tvguide.xml", soit en clair, soit en version zippée. Pour ma part, j'ai choisi d'implémenter la version en clair (fichier xml). C'est donc le seul qui fonctionnera!!
+Il faut s'enregistrer sur le site de kazer : http://www.kazer.org/user/new
+Ensuite, il faut sélectionner une liste de chaines dont on veut voir le TV guide dans le fichier : http://www.kazer.org/my-channels.html
+
+
+Comment accéder au channel guide avec myfreeTV :
+================================================
+Démarrer myfreeTV
+Cliquer sur le bouton "VLC" en bas à droite.
+Activer la ligne "Kazer URL pour guide TV" (cliquer sur le carré à gauche)
+Aller sur le site KAZER dans votre compte sur la page de config des chaines (http://www.kazer.org/my-channels.html) et recopier l'URL fournie sur la ligne : "Pour obtenir votre guide TV au format XML, utilisez ce lien :"
+Coller cette URL dans la zone de saisie prévue à cet effet dans la config de myfreeTV, puis cliquer sur OK
+
+Comment installer myFreeTV sous UBUNTU :
+========================================
+- récupérer le fichier myfreetv2.tar.bz2 sur le repository (https://github.com/gtkgtk/myfreetv)
+- le dézipper dans un répertoire temporaire avec le gestionnaire d'archives
+- aller dans le répertoire et lancer la commande : sudo ./install
+Vous pouvez également créer un lanceur  sur votre bureau...
+
+Enjoy!
+
+Pierre

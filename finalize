@@ -1,6 +1,7 @@
 #!/bin/sh
 cd dist
 chmod +x myfreetv
+chmod +x install
 chown root: *
 tar cjf ../myfreetv2.tar.bz2 *
 cd -
