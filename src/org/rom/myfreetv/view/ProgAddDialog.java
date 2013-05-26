@@ -37,6 +37,7 @@ import org.rom.myfreetv.process.ProgramRules;
 import org.rom.myfreetv.process.RecordJob;
 import org.rom.myfreetv.streams.Channel;
 import org.rom.myfreetv.streams.ChannelManager;
+import org.rom.myfreetv.streams.RadioChannel;
 
 class ProgAddDialog extends JDialog implements ActionListener {
 
@@ -377,7 +378,20 @@ class ProgAddDialog extends JDialog implements ActionListener {
                         start = new GregorianCalendar(std.get(Calendar.YEAR), std.get(Calendar.MONTH), std.get(Calendar.DAY_OF_MONTH), stt.get(Calendar.HOUR_OF_DAY), stt.get(Calendar.MINUTE));
                         if(auto.isSelected())
                             file = new File(Config.getInstance().getAutoPath().getUrl() + File.separatorChar + FileUtils.generateAutoFilename(start, channel));
-                        // file = owner.generateFile(start,channel,false);
+                        else
+                        {
+                        	if (channel instanceof RadioChannel)
+                        	{
+                        		if (!FileUtils.isOgg(filePath.getText()))
+                        			file = new File(filePath.getText()+".ogg");
+                        	}
+                        	else if (channel instanceof Channel)
+                        	{
+                        		if (!FileUtils.isMpeg(filePath.getText()))
+                        			file = new File(filePath.getText()+".mpg");
+                        	}
+                        }
+                          // file = owner.generateFile(start,channel,false);
                     } else {
                         start = Calendar.getInstance();
                         file = new File(job.getUrlOutput());

@@ -211,7 +211,7 @@ public class ExternVLC extends Observable implements Player, Recorder, Runnable 
 
         String s="";
         if( recordable instanceof RadioChannel)
-            s =  ":sout=#transcode{acodec=mp3,ab=128,channels=2}:duplicate{dst=std{access=file,mux=raw,dst=\"" + output +"\"}}";
+        	s =  ":sout=#transcode{vcodec=none,acodec=vorbis,ab=128,channels=2}:duplicate{dst=std{access=file,mux=ogg,dst=\"" + output +"\"}}";
         else
             s = ":sout=#duplicate{dst=std{access=file,mux=" + Config.getInstance ().getMuxMode ().getName () + ",dst=\"" + output + "\" }}";
 

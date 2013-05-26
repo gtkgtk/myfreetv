@@ -723,6 +723,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         return tab;
     }
 
+	// PGU : le site http://audience.free.fr/ ne fonctionne plus
     //public boolean isAudiencePanelVisible() {
     //    return tab.getSelectedComponent() == audiencePanel;
     //}

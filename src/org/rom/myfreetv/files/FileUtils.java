@@ -29,9 +29,9 @@ public class FileUtils {
       filename = filename.toLowerCase();
       return filename.endsWith(".mpg") || filename.endsWith(".mpeg");
    }
-   public static boolean isMp3(String filename) {
+   public static boolean isOgg(String filename) {
       filename = filename.toLowerCase();
-      return filename.endsWith(".mp3");
+      return filename.endsWith(".ogg");
    }
 
    public static String getDestination(Component parent, Recordable recordable) {
@@ -82,7 +82,7 @@ public class FileUtils {
                chooser.setCurrentDirectory(new File(currentPath));
             MyFileFilter filter;
             if(recordable instanceof RadioChannel)
-               filter = new MyFileFilter(new String[] { "mp3" }, "Fichiers MP3");
+               filter = new MyFileFilter(new String[] { "ogg" }, "Fichiers OGG");
             else
                filter = new MyFileFilter(new String[] { "mpg", "mpeg" }, "Fichiers MPEG");
             chooser.addChoosableFileFilter(filter);
@@ -91,8 +91,8 @@ public class FileUtils {
                file = chooser.getSelectedFile();
                filename = file.getAbsolutePath();
                if(recordable instanceof RadioChannel)
-                  if(!FileUtils.isMp3(filename)) {
-                  filename += ".mp3";
+                  if(!FileUtils.isOgg(filename)) {
+                  filename += ".ogg";
                   file = new File(filename);
                   } else {
                   if(!FileUtils.isMpeg(filename)) {
