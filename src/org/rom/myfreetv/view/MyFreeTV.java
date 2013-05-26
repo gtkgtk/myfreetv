@@ -47,7 +47,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
 
     public final static String name = "MyFreeTV";
     public final static String version = "2.30 beta 1";
-    public final static String url = "http://myfreetv.sourceforge.net";
+    public final static String url = "https://github.com/gtkgtk/myfreetv";
     public final static String mail = "rom1v@yahoo.fr";
 
     // private static enum Plaf {
@@ -70,7 +70,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     private RecordPanel recordPanel;
     private ProgPanel progPanel;
     private JPanel vlcPanel, mftPanel;
-    private AudiencePanel audiencePanel;
+    //private AudiencePanel audiencePanel;
     private FilePanel filePanel;
     // à re-implementer + tard :(
     // private GuideTVPanel guideTVPanel;
@@ -183,7 +183,8 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         recordPanel = new RecordPanel(this);
         progPanel = new ProgPanel(this);
         filePanel = new FilePanel(this);
-        audiencePanel = new AudiencePanel(this);
+        // PGU : le site ne fonctionne plus
+        //audiencePanel = new AudiencePanel(this);
         // à re-implementer + tard :(
         // guideTVPanel = new GuideTVPanel(this);
         freeplayerPanel = new FreePlayerPanel(this);
@@ -212,7 +213,8 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
 
         tab.addTab("Enregistrements", ImageManager.getInstance().getImageIcon("record"), recPanel);
         tab.addTab("Fichiers", ImageManager.getInstance().getImageIcon("file_rename"), filePanel);
-        tab.addTab("Audience", ImageManager.getInstance().getImageIcon("audience"), audiencePanel);
+        // PGU : le site http://audience.free.fr/ ne fonctionne plus
+        //tab.addTab("Audience", ImageManager.getInstance().getImageIcon("audience"), audiencePanel);
         // à re-implementer + tard :(
         // tab.addTab("Guide TV",
         // ImageManager.getInstance().getImageIcon("guidetv"), guideTVPanel);
@@ -541,7 +543,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         playPanel.initButtons();
         recordPanel.initButtons();
         progPanel.initButtons();
-        audiencePanel.initButtons();
+        //audiencePanel.initButtons();
         // à re-implementer + tard :(
         // guideTVPanel.initButtons();
         freeplayerPanel.initButtons();
@@ -589,9 +591,10 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
 
     public void stateChanged(ChangeEvent e) {
         int ind = tab.getSelectedIndex();
-        if (ind == tab.indexOfComponent(audiencePanel) && !audiencePanel.isRefreshed())
-            audiencePanel.refresh();
-        else if (ind == tab.indexOfComponent(filePanel))
+        // if (ind == tab.indexOfComponent(audiencePanel) && !audiencePanel.isRefreshed())
+        //    audiencePanel.refresh();
+        //else 
+        if (ind == tab.indexOfComponent(filePanel))
             filePanel.initMoAndRefresh();
         // à re-implementer + tard :(
         // else if(ind == tab.indexOfComponent(guideTVPanel))
@@ -720,9 +723,9 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         return tab;
     }
 
-    public boolean isAudiencePanelVisible() {
-        return tab.getSelectedComponent() == audiencePanel;
-    }
+    //public boolean isAudiencePanelVisible() {
+    //    return tab.getSelectedComponent() == audiencePanel;
+    //}
 
     public boolean isScreenPanelVisible() {
         return tab.getSelectedComponent() == vlcPanel;
