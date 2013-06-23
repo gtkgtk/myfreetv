@@ -70,7 +70,7 @@ class ChannelGuide extends Observable {
             int i = 0;
             while(i < list.size() && emission == null) {
                 Emission e = list.get(i);
-                if(isCurrent(day, e.getStart(), e.getEnd()))
+                if(isCurrent(cur, e.getStart(), e.getEnd()))
                     emission = e;
                 i++;
             }

@@ -3,12 +3,16 @@ package org.rom.myfreetv.view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import org.rom.myfreetv.guidetv.Emission;
+import org.rom.myfreetv.guidetv.GuideTVManager;
 import org.rom.myfreetv.process.JobManager;
 import org.rom.myfreetv.process.PlayJob;
 import org.rom.myfreetv.process.RecordJob;
@@ -20,6 +24,7 @@ import org.rom.myfreetv.streams.TimeShiftFileIn;
 
 class PlayPanel extends JPanel implements ActionListener {
 
+    private final static DateFormat formatter = new SimpleDateFormat("HH:mm");
     private MyFreeTV owner;
     private JButton stop, rec, prog;
     private JLabel label;
@@ -85,8 +90,23 @@ class PlayPanel extends JPanel implements ActionListener {
                     buf.append("</b>");
                 }
             } else {
-                buf.append(playable.getName());
+            	Emission emission = GuideTVManager.getInstance().getCurrent(playable.getChannel());
+            	buf.append(playable.getName());
                 buf.append("</b>");
+                
+               	if (emission!=null)
+            	{
+	        	    buf.append("<br>");
+	        	    buf.append(formatter.format(emission.getStart().getTime()));
+	        	    buf.append(" - ");
+	        	    buf.append(formatter.format(emission.getEnd().getTime()));
+	        	    buf.append(" : ");
+	        	    buf.append(emission.getTitle());
+	        	    if(emission.getSubtitle() != null)
+	        	    {
+	        		        buf.append(" (" + emission.getSubtitle() + ")");
+	        	    }
+            	}
             }
             buf.append("</html>");
             label.setText(new String(buf));
