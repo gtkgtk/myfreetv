@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -35,6 +37,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.rom.myfreetv.config.Config;
 import org.rom.myfreetv.files.RecordFileManager;
+import org.rom.myfreetv.guidetv.Emission;
 import org.rom.myfreetv.guidetv.GuideTVManager;
 import org.rom.myfreetv.process.JobManager;
 import org.rom.myfreetv.process.ProgramManager;
@@ -46,8 +49,9 @@ import org.rom.myfreetv.update.Updater;
 
 public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, ListSelectionListener, Observer {
 
+    private final static DateFormat formatter = new SimpleDateFormat("HH:mm");
     public final static String name = "MyFreeTV";
-    public final static String version = "2.30 beta 3 - PGU - KAZER Enabled";
+    public final static String version = "2.30 beta 4 - PGU - KAZER Enabled";
     public final static String url = "https://github.com/gtkgtk/myfreetv";
     public final static String mail = "rom1v@yahoo.fr";
 
@@ -82,6 +86,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     private JDialog dialog;
     private JButton shutdown;
 
+    private JLabel CurProgLabel;
     private JPanel pan;
     private JPanel back;
     private CardLayout layout;
@@ -200,9 +205,15 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         leftPanel.add(logoLabel, BorderLayout.WEST);
         leftPanel.add(channelsWithLogosPanel);
         // leftPanel.add(logoViewer,BorderLayout.SOUTH);
+        
+        CurProgLabel = new JLabel("Programme courant non disponible...");
+        CurProgLabel.setVerticalAlignment(JLabel.TOP);
+
+        JPanel downPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        downPanel.add(CurProgLabel, BorderLayout.SOUTH);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new java.awt.Dimension(500, 300));
+        rightPanel.setPreferredSize(new java.awt.Dimension(400, 300));
         rightPanel.add(playPanel, BorderLayout.NORTH);
 
         JPanel recPanel = new JPanel();
@@ -251,6 +262,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         about.setToolTipText("À propos de " + name + ".");
         about.setActionCommand("about");
         about.addActionListener(this);
+        southPanel.add(CurProgLabel);
         southPanel.add(alwaysOnTop);
 //        southPanel.add(shutdown);
         southPanel.add(vlc);
@@ -542,8 +554,12 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         Channel chan = (selected >= 0) ? ChannelManager.getInstance().getChannels().get(selected) : null;
         logoViewer.setLogo(chan);
         // à re-implementer + tard :(
-        if(isGuideTVVisible())
-           guideTVPanel.refresh();
+        //if(isGuideTVVisible())
+        //{
+        	guideTVPanel.refresh();
+
+        //}
+        updateCurProg();
         initButtons();
     }
 
@@ -576,13 +592,40 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         // }
     }
 
+    private void updateCurProg()
+    {
+        int selected = channelsPanel.getChannelsList().getSelectedIndex();
+        Channel chan = (selected >= 0) ? ChannelManager.getInstance().getChannels().get(selected) : null;
+    	Emission emission = GuideTVManager.getInstance().getCurrent(chan);
+        StringBuffer buf = new StringBuffer("<html><b>Actuellement : </b>");
+       	if (emission!=null)
+    	{
+    	    buf.append(formatter.format(emission.getStart().getTime()));
+    	    buf.append(" - ");
+    	    buf.append(formatter.format(emission.getEnd().getTime()));
+    	    buf.append(" : ");
+    	    buf.append(emission.getTitle());
+    	    if(emission.getSubtitle() != null)
+    	    {
+    		        buf.append(" (" + emission.getSubtitle() + ")");
+    	    }
+            buf.append("</html>");
+
+    	    CurProgLabel.setText(buf.toString());
+    	}
+       	else
+       		CurProgLabel.setText("Programme courant non disponible...");
+
+    }
     public void update() {
         playPanel.update();
         recordPanel.update();
         progPanel.update();
         filePanel.update();
         if (Config.getInstance().getKazerPath().isEnabled())
+        {
         	guideTVPanel.refresh();
+        }
         freeplayerPanel.update();
         initButtons();
     }
