@@ -24,3 +24,8 @@ Pour l'installer :
 - récupérer le fichier myfreetv2.tar.bz2 sur le repository
 - le dézipper dans un répertoire temporaire avec le gestionnaire d'archives
 - aller dans le répertoire et lancer la commande : sudo ./install
+
+Nouveau (25/06/2013): version 2.30 beta4 disponible
+=====================
+Ajout de l'intitulé du programme courant dans le panneau Player (en haut à droite)
+Ajout de ll'intitulé du programme couran de la chaine sélectionnée dans la partie basse de l'interface
