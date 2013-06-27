@@ -596,19 +596,34 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     {
         int selected = channelsPanel.getChannelsList().getSelectedIndex();
         Channel chan = (selected >= 0) ? ChannelManager.getInstance().getChannels().get(selected) : null;
-    	Emission emission = GuideTVManager.getInstance().getCurrent(chan);
+    	Emission curEmission = GuideTVManager.getInstance().getCurrent(chan);
+    	Emission nextEmission = GuideTVManager.getInstance().getNext(chan);
         StringBuffer buf = new StringBuffer("<html><b>Actuellement : </b>");
-       	if (emission!=null)
+       	if (curEmission!=null)
     	{
-    	    buf.append(formatter.format(emission.getStart().getTime()));
+    	    buf.append(formatter.format(curEmission.getStart().getTime()));
     	    buf.append(" - ");
-    	    buf.append(formatter.format(emission.getEnd().getTime()));
+    	    buf.append(formatter.format(curEmission.getEnd().getTime()));
     	    buf.append(" : ");
-    	    buf.append(emission.getTitle());
-    	    if(emission.getSubtitle() != null)
+    	    buf.append(curEmission.getTitle());
+    	    if(curEmission.getSubtitle() != null)
     	    {
-    		        buf.append(" (" + emission.getSubtitle() + ")");
+    		        buf.append(" (" + curEmission.getSubtitle() + ")");
     	    }
+           	if (nextEmission!=null)
+        	{
+           		buf.append("<br><b>A suivre     : </b>");
+        	    buf.append(formatter.format(nextEmission.getStart().getTime()));
+        	    buf.append(" - ");
+        	    buf.append(formatter.format(nextEmission.getEnd().getTime()));
+        	    buf.append(" : ");
+        	    buf.append(nextEmission.getTitle());
+        	    if(nextEmission.getSubtitle() != null)
+        	    {
+        		        buf.append(" (" + nextEmission.getSubtitle() + ")");
+        	    }
+        	}
+    	    
             buf.append("</html>");
 
     	    CurProgLabel.setText(buf.toString());

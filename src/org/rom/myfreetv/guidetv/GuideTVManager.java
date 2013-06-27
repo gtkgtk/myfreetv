@@ -116,6 +116,18 @@ public class GuideTVManager extends Observable implements Observer {
         return emission;
     }
 
+    public Emission getNext(Channel channel) {
+        // initCache();
+        Emission emission = null;
+        ChannelGuide cg = channelGuides.get(channel.getNum());
+        if(cg == null) {
+//            initCache();
+            cg = new ChannelGuide(channel);
+        }
+        emission = cg.getNext();
+        return emission;
+    }
+
     // private void save() {
     // try {
     // ObjectOutputStream oos = new ObjectOutputStream(new

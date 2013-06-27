@@ -78,6 +78,26 @@ class ChannelGuide extends Observable {
         return emission;
     }
 
+	public Emission getNext() {
+        Calendar cur = Calendar.getInstance();
+        Calendar day = new GregorianCalendar(cur.get(Calendar.YEAR), cur.get(Calendar.MONTH), cur.get(Calendar.DAY_OF_MONTH));
+        List<Emission> list = getEmissions(day);
+        Emission curEmission = null;
+        Emission nextEmission = null;
+        if(list != null) {
+            int i = 0;
+            while(i < list.size() && curEmission == null) {
+                Emission e = list.get(i);
+                if(isCurrent(cur, e.getStart(), e.getEnd()))
+                    curEmission = e;
+                i++;
+            }
+            if (curEmission!=null)
+            	nextEmission = list.get(i);
+        }
+        return nextEmission;
+    }
+
     private static boolean isCurrent(Calendar current, Calendar start, Calendar stop) {
         return current.compareTo(start) >= 0 && current.compareTo(stop) < 0;
     }
