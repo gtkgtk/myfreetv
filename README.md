@@ -6,6 +6,17 @@ Ce logiciel n'est plus maintenu depuis mars 2006.
 
 [Post de la v2.30b1](http://forum.ubuntu-fr.org/viewtopic.php?pid=2224328)
 
+Pour l'installer :
+- récupérer le fichier myfreetv2.tar.bz2 sur le repository
+- le dézipper dans un répertoire temporaire avec le gestionnaire d'archives
+- aller dans le répertoire et lancer la commande : sudo ./install
+
+Nouveau (25/06/2013): version 2.30 beta4 disponible
+=====================
+Ajout de l'intitulé du programme courant dans le panneau Player (en haut à droite)
+Ajout de l'intitulé du programme courant de la chaine sélectionnée dans la partie basse de l'interface
+Ajout de l'intitulé du programme suivant de la chaine sélectionnée dans la partie basse de l'interface
+
 Nouveau (26/05/2013): version 2.30 beta3 disponible
 =====================
 MyfreeTV est de nouveau opérationnel sous ubuntu 12.10 et ultérieures
@@ -20,12 +31,4 @@ MyfreeTV est de nouveau opérationnel sous ubuntu 12.10 et ultérieures
 
 Sources et binaires disponibles sur : https://github.com/gtkgtk/myfreetv
 
-Pour l'installer :
-- récupérer le fichier myfreetv2.tar.bz2 sur le repository
-- le dézipper dans un répertoire temporaire avec le gestionnaire d'archives
-- aller dans le répertoire et lancer la commande : sudo ./install
 
-Nouveau (25/06/2013): version 2.30 beta4 disponible
-=====================
-Ajout de l'intitulé du programme courant dans le panneau Player (en haut à droite)
-Ajout de ll'intitulé du programme couran de la chaine sélectionnée dans la partie basse de l'interface

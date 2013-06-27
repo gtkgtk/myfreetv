@@ -1,3 +1,12 @@
+# créer le répertoire myfreeTV s'il n'existe pas déjà
 mkdir /usr/local/share/myfreeTV
+
+# y copier les fichiers de l'archive
 cp -r ./* /usr/local/share/myfreeTV
+
+# rendre le fichier exécutable
+chmod +x /usr/local/share/myfreeTV/myfreetv
+
+# créer le lien dans sbin avec myfreetv
 ln -sf /usr/local/share/myfreeTV/myfreetv /sbin/myfreetv
+
