@@ -6,6 +6,10 @@ Ce logiciel n'est plus maintenu depuis mars 2006.
 
 [Post de la v2.30b1](http://forum.ubuntu-fr.org/viewtopic.php?pid=2224328)
 
+Ce logiciel est à nouveau maintenu sous linux (voir ci-dessous).
+
+Sources et binaires disponibles sur : https://github.com/gtkgtk/myfreetv
+
 Pour l'installer :
 - récupérer le fichier myfreetv2.tar.bz2 sur le repository
 - le dézipper dans un répertoire temporaire avec le gestionnaire d'archives
@@ -29,6 +33,5 @@ MyfreeTV est de nouveau opérationnel sous ubuntu 12.10 et ultérieures
 	- recopier l'url fournie en tête de la liste Kazer (celle non zippée en XML) dans le champ de saisie
 - suppression de l'onglet Audience qui n'est plus actif chez FREE
 
-Sources et binaires disponibles sur : https://github.com/gtkgtk/myfreetv
 
 
