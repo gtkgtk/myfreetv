@@ -78,6 +78,16 @@ class ChannelGuide extends Observable {
         return emission;
     }
 
+    public void DisplayCurProg()
+    {
+    	
+    }
+    
+    public void DisplayNextProg()
+    {
+    	
+    }
+    
 	public Emission getNext() {
         Calendar cur = Calendar.getInstance();
         Calendar day = new GregorianCalendar(cur.get(Calendar.YEAR), cur.get(Calendar.MONTH), cur.get(Calendar.DAY_OF_MONTH));

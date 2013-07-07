@@ -10,6 +10,9 @@ import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
@@ -84,14 +87,14 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     private JCheckBox alwaysOnTop;
 
     private JDialog dialog;
-    private JButton shutdown;
+    // private JButton shutdown;
 
     private JLabel CurProgLabel;
     private JPanel pan;
     private JPanel back;
     private CardLayout layout;
     private boolean fw;
-
+    
     private MyFreeTV(boolean visible) {
         super(name + " " + version);
 
@@ -207,7 +210,35 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         // leftPanel.add(logoViewer,BorderLayout.SOUTH);
         
         CurProgLabel = new JLabel("Programme courant non disponible...");
-        CurProgLabel.setVerticalAlignment(JLabel.TOP);
+        CurProgLabel.addMouseListener(new MouseAdapter() {
+        	@Override
+             public void mouseClicked(MouseEvent e) {
+                int selected = channelsPanel.getChannelsList().getSelectedIndex();
+                Channel chan=getSelectedChannel();
+                //Channel chan = (selected >= 0) ? ChannelManager.getInstance().getChannels().get(selected) : null;
+            	int hauteurLabel=CurProgLabel.getHeight();
+            	int y = e.getY();
+            	if (selected>=0)
+            	{
+	            	// 1 ligne de  texte a 18 pixel de hauteur
+	            	if (y >= 18)
+	            	{
+	            		// cas : à suivre
+	                	Emission nextEmission = GuideTVManager.getInstance().getNext(chan);
+	            		new EmissionDialog(instance,nextEmission);
+	            	}
+	            	else
+	            	{
+	            		// cas : actuellement
+	                	Emission curEmission = GuideTVManager.getInstance().getCurrent(chan);
+	            		new EmissionDialog(instance,curEmission);
+	            	}
+            	}
+             };
+          });
+
+
+        //CurProgLabel.setVerticalAlignment(JLabel.TOP);
 
         JPanel downPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         downPanel.add(CurProgLabel, BorderLayout.SOUTH);
@@ -246,10 +277,10 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
         alwaysOnTop.setToolTipText("Toujours au-dessus.");
         alwaysOnTop.setActionCommand("always_on_top_mft");
         alwaysOnTop.addActionListener(this);
-        shutdown = new JButton();
+        // shutdown = new JButton();
         // initShutdown();
-        shutdown.setActionCommand("shutdown");
-        shutdown.addActionListener(this);
+        // shutdown.setActionCommand("shutdown");
+        // shutdown.addActionListener(this);
         JButton vlc = new JButton(ImageManager.getInstance().getImageIcon("vlc"));
         vlc.setToolTipText("Configurer " + name + ".");
         vlc.setActionCommand("config");

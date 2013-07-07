@@ -17,9 +17,9 @@ Pour l'installer :
 
 Nouveau (25/06/2013): version 2.30 beta4 disponible
 =====================
-Ajout de l'intitulé du programme courant dans le panneau Player (en haut à droite)
-Ajout de l'intitulé du programme courant de la chaine sélectionnée dans la partie basse de l'interface
-Ajout de l'intitulé du programme suivant de la chaine sélectionnée dans la partie basse de l'interface
+- Ajout de l'intitulé du programme courant dans le panneau Player (en haut à droite)
+- Ajout de l'intitulé du programme courant de la chaine sélectionnée dans la partie basse de l'interface
+- Ajout de l'intitulé du programme suivant de la chaine sélectionnée dans la partie basse de l'interface
 
 Nouveau (26/05/2013): version 2.30 beta3 disponible
 =====================
