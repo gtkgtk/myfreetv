@@ -51,11 +51,9 @@ class PlayPanel extends JPanel implements ActionListener {
              public void mouseClicked(MouseEvent e) {
                 PlayJob pj = JobManager.getInstance().getPlay();
         		if(pj != null) {
-	                int selected = 0;//channelsPanel.getChannelsList().getSelectedIndex();
-	                Channel chan = (selected >= 0) ? ChannelManager.getInstance().getChannels().get(selected) : null;
-	                Channel chanTemp=Lowner.getSelectedChannel();
+	                Channel chan=Lowner.getSelectedChannel();
 	
-	                Emission curEmission = GuideTVManager.getInstance().getCurrent(chanTemp);
+	                Emission curEmission = GuideTVManager.getInstance().getCurrent(chan);
 	        		new EmissionDialog(Lowner,curEmission);
         		}
         	};
