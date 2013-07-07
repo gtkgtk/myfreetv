@@ -3,6 +3,8 @@ package org.rom.myfreetv.view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -17,22 +19,24 @@ import org.rom.myfreetv.process.JobManager;
 import org.rom.myfreetv.process.PlayJob;
 import org.rom.myfreetv.process.RecordJob;
 import org.rom.myfreetv.streams.Channel;
+import org.rom.myfreetv.streams.ChannelManager;
 import org.rom.myfreetv.streams.FileIn;
 import org.rom.myfreetv.streams.Playable;
 import org.rom.myfreetv.streams.Recordable;
 import org.rom.myfreetv.streams.TimeShiftFileIn;
+import org.rom.myfreetv.view.EmissionDialog;
 
 class PlayPanel extends JPanel implements ActionListener {
 
     private final static DateFormat formatter = new SimpleDateFormat("HH:mm");
-    private MyFreeTV owner;
+    private MyFreeTV Lowner;
     private JButton stop, rec, prog;
     private JLabel label;
     private LogoViewer logo;
 
     public PlayPanel(MyFreeTV owner) {
         super();
-        this.owner = owner;
+        this.Lowner = owner;
         setLayout(new BorderLayout());
         setBorder(new TitledBorder(null, "Lecture en cours"));
 
@@ -41,6 +45,21 @@ class PlayPanel extends JPanel implements ActionListener {
 
         label = new JLabel();
         add(label);
+
+        label.addMouseListener(new MouseAdapter() {
+        	@Override
+             public void mouseClicked(MouseEvent e) {
+                PlayJob pj = JobManager.getInstance().getPlay();
+        		if(pj != null) {
+	                int selected = 0;//channelsPanel.getChannelsList().getSelectedIndex();
+	                Channel chan = (selected >= 0) ? ChannelManager.getInstance().getChannels().get(selected) : null;
+	                Channel chanTemp=Lowner.getSelectedChannel();
+	
+	                Emission curEmission = GuideTVManager.getInstance().getCurrent(chanTemp);
+	        		new EmissionDialog(Lowner,curEmission);
+        		}
+        	};
+          });
 
         JPanel buttons = new JPanel();
         // pause = new
@@ -134,13 +153,13 @@ class PlayPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
         if(s.equals("stop")) {
-            owner.getActions().stopPlay();
+            Lowner.getActions().stopPlay();
         } else if(s.equals("rec")) {
             PlayJob job = JobManager.getInstance().getPlay();
             if(job != null) {
                 Playable playable = job.getPlayable();
                 if(playable != null && playable instanceof Recordable)
-                    owner.getActions().record((Recordable) playable);
+                    Lowner.getActions().record((Recordable) playable);
             }
         } else if(s.equals("prog")) {
             PlayJob job = JobManager.getInstance().getPlay();
@@ -151,9 +170,9 @@ class PlayPanel extends JPanel implements ActionListener {
                     System.out.println(123);
                     RecordJob rj = JobManager.getInstance().getRecordJob(playable.getChannel());
                     if(rj == null)
-                        owner.getActions().prog(playable.getChannel());
+                        Lowner.getActions().prog(playable.getChannel());
                     else
-                        owner.getActions().prog(rj);
+                        Lowner.getActions().prog(rj);
                 }
             }
         }
