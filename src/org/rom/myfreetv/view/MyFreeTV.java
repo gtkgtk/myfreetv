@@ -54,9 +54,9 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
 
     private final static DateFormat formatter = new SimpleDateFormat("HH:mm");
     public final static String name = "MyFreeTV";
-    public final static String version = "2.30 beta 4 - PGU - KAZER Enabled";
+    public final static String version = "2.30 beta 5 - PGU - KAZER Enabled";
     public final static String url = "https://github.com/gtkgtk/myfreetv";
-    public final static String mail = "rom1v@yahoo.fr";
+    public final static String mail = "pgutekunst@libertysurf.fr";
 
     //private static enum Plaf {
     // SYSTEM, JRE, PGS, SKIN
@@ -72,7 +72,7 @@ public class MyFreeTV extends JFrame implements ActionListener, ChangeListener, 
     private Actions actions;
     //private SkinManager skinManager;
 
-    private ChannelPanel channelsPanel;
+    public ChannelPanel channelsPanel;
     private PlayPanel playPanel;
     private JTabbedPane tab;
     private RecordPanel recordPanel;

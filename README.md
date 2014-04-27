@@ -15,6 +15,13 @@ Pour l'installer :
 - le dézipper dans un répertoire temporaire avec le gestionnaire d'archives
 - aller dans le répertoire et lancer la commande : sudo ./install
 
+Nouveau (27/04/2014): version 2.30 beta5 disponible
+=====================
+- Corrections diverses pour le guide TV
+- Corrections diveres pour l'affichage du programme courant
+- Transfert du fichier record.dat dans le répertoire de l'utilisateur pour éviter les plantage
+- Correction de la gestion des Favoris (pb avec la lecture en UTF)
+
 Nouveau (25/06/2013): version 2.30 beta4 disponible
 =====================
 - Ajout de l'intitulé du programme courant dans le panneau Player (en haut à droite)
