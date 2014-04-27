@@ -259,9 +259,9 @@ class ProgAddDialog extends JDialog implements ActionListener {
         setVisible(true);
     }
 
-    public ProgAddDialog(MyFreeTV owner, Emission emission) {
+    public ProgAddDialog(MyFreeTV owner, Emission emission, int channelIndex) {
         this(owner);
-        init(emission);
+        init(emission, channelIndex);
         setVisible(true);
     }
 
@@ -354,7 +354,7 @@ class ProgAddDialog extends JDialog implements ActionListener {
         initButtons();
     }
 
-    private void init(Emission emission) {
+    private void init(Emission emission, int channelIndex) {
         channels.setSelectedIndex(ChannelManager.getInstance().getChannels().indexOf(emission.getChannel()));
 
         once.setSelected(true);

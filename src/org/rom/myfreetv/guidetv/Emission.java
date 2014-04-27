@@ -15,6 +15,7 @@ public class Emission implements Comparable<Emission> {
     private Calendar start;
     private Calendar end;
     private String title;
+    private String name;
     private String subtitle;
     private String type;
     private String details;
@@ -48,6 +49,10 @@ public class Emission implements Comparable<Emission> {
 
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Image getImage() {
@@ -84,6 +89,10 @@ public class Emission implements Comparable<Emission> {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setName(String inName) {
+        this.name = inName;
     }
 
     public void setImage(Image image) {

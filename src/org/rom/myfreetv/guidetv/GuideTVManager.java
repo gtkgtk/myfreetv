@@ -107,24 +107,30 @@ public class GuideTVManager extends Observable implements Observer {
     public Emission getCurrent(Channel channel) {
         // initCache();
         Emission emission = null;
-        ChannelGuide cg = channelGuides.get(channel.getNum());
-        if(cg == null) {
-//            initCache();
-            cg = new ChannelGuide(channel);
+        if (channel != null)
+        {
+	        ChannelGuide cg = channelGuides.get(channel.getNum());
+	        if(cg == null) {
+	//            initCache();
+	            cg = new ChannelGuide(channel);
+	        }
+	        emission = cg.getCurrent();
         }
-        emission = cg.getCurrent();
         return emission;
     }
 
     public Emission getNext(Channel channel) {
         // initCache();
         Emission emission = null;
-        ChannelGuide cg = channelGuides.get(channel.getNum());
-        if(cg == null) {
-//            initCache();
-            cg = new ChannelGuide(channel);
+        if (channel != null)
+        {
+	        ChannelGuide cg = channelGuides.get(channel.getNum());
+	        if(cg == null) {
+	//            initCache();
+	            cg = new ChannelGuide(channel);
+	        }
+	        emission = cg.getNext();
         }
-        emission = cg.getNext();
         return emission;
     }
 

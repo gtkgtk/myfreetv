@@ -138,8 +138,8 @@ public class Actions {
         new ProgAddDialog(owner, channel);
     }
 
-    public void prog(Emission emission) {
-        new ProgAddDialog(owner, emission);
+    public void prog(Emission emission, int channelIndex) {
+        new ProgAddDialog(owner, emission, channelIndex);
     }
 
     private void echec() {

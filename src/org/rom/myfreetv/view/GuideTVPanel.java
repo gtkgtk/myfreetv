@@ -26,7 +26,10 @@ import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.JXDatePicker;
 import org.rom.myfreetv.guidetv.Emission;
 import org.rom.myfreetv.guidetv.GuideTVManager;
+import org.rom.myfreetv.process.JobManager;
+import org.rom.myfreetv.process.PlayJob;
 import org.rom.myfreetv.streams.Channel;
+import org.rom.myfreetv.streams.Playable;
 import org.rom.myfreetv.view.EmissionList;
 
 class GuideTVPanel extends JPanel implements ActionListener, ListSelectionListener {
@@ -58,8 +61,9 @@ class GuideTVPanel extends JPanel implements ActionListener, ListSelectionListen
                 if(e.getClickCount() == 2) {
                     int selectedIndex = emissions.locationToIndex(e.getPoint());
                     if(selectedIndex >= 0) {
+                    	int ChannelIndex = owner.channelsPanel.getCurrentChannelIndex();
                         Emission emission = (Emission) emissions.getModel().getElementAt(selectedIndex);
-                        owner.getActions().prog(emission);
+                        owner.getActions().prog(emission,ChannelIndex);
                     }
                 }
             }
@@ -202,10 +206,11 @@ class GuideTVPanel extends JPanel implements ActionListener, ListSelectionListen
         if(e.getSource() == date)
             refresh();
         else if(e.getActionCommand() == "prog") {
-            int selectedIndex = emissions.getSelectedIndex();
+        	int selectedIndex = emissions.getSelectedIndex();
             if(selectedIndex >= 0) {
+            	int ChannelIndex = owner.channelsPanel.getCurrentChannelIndex();
                 Emission emission = (Emission) emissions.getModel().getElementAt(selectedIndex);
-                owner.getActions().prog(emission);
+                owner.getActions().prog(emission, ChannelIndex);
             }
         }
     }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -83,7 +84,8 @@ public class ChannelManager {
          ListIterator<Channel> ite = channelsFavoris.listIterator();
          while(ite.hasNext()){
             Channel tmp = ite.next();
-            raf.writeBytes(tmp.getSaveString()+"\n");//tmp.getName()+"\n");
+            String value = new String(tmp.getSaveString().getBytes(), Charset.forName("UTF-8"));
+            raf.writeBytes(value+"\n");//tmp.getName()+"\n");
          }
          raf.close();
       } catch(Exception e) {
@@ -136,7 +138,7 @@ public class ChannelManager {
          return;
       }
       try {
-         sc = new Scanner(f, "UTF-8");
+         sc = new Scanner(f, "ISO-8859-1");
       } catch (FileNotFoundException ex) {
          System.err.println("Probleme de lecture du fichier favoris");
          return;
@@ -205,6 +207,8 @@ public class ChannelManager {
                      try {
                         num = Integer.parseInt(s.substring(i + 1, j - 1));
                         name = s.substring(j + 2);
+	                    if (name.endsWith(" "))
+	                    	name=name.substring(0, name.length()-1);
                         String opt = "";
                         url = sc.nextLine ();
                         while(url.startsWith ("#EXTVLCOPT:"))
@@ -283,7 +287,10 @@ public class ChannelManager {
       Channel ch = null;
       int i = 0;
       while(i < tmpChannels.size() && ch == null) {
-         if(tmpChannels.get(i).getName().equals(name))
+    	  String chname=tmpChannels.get(i).getName();
+    	  if (chname.endsWith(" "))
+    		  chname=chname.substring(0, chname.length()-1);
+         if(chname.equalsIgnoreCase(name))
             ch = tmpChannels.get(i);
          i++;
       }

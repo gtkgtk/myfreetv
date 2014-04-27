@@ -210,6 +210,13 @@ class ChannelPanel extends JPanel implements ActionListener {
             return channelsList;
       }
    }
+   
+   public int getCurrentChannelIndex()
+   {
+      ChannelList cList = getChannelsList();
+
+      return cList.getSelectedIndex();
+   }
 
    public void initButtons() {
       ChannelList cList = getChannelsList();
