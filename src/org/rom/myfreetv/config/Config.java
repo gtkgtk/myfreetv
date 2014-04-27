@@ -20,6 +20,7 @@ public class Config {
     private final static String config = new File(PREF_DIR, "config.xml").getAbsolutePath();
     public final static File FAVORIS_FILE = new File(PREF_DIR, "favoris.m3u");
     public final static String PROGRAMMATION_FILENAME = new File(PREF_DIR, "prog.dat").getAbsolutePath();
+    public final static String RECORD_FILENAME = new File(PREF_DIR, "record.dat").getAbsolutePath();
     public final static String TVGUIDE_FILENAME = new File(PREF_DIR, "tvguide.xml").getAbsolutePath();
 
     private final static String VLC_PATH = "vlc_path";

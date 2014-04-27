@@ -14,13 +14,15 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.rom.myfreetv.config.Config;
 import org.rom.myfreetv.process.JobManager;
 import org.rom.myfreetv.streams.Channel;
 import org.rom.myfreetv.streams.ChannelManager;
 
 public class RecordFileManager extends Observable implements Observer {
 
-    private final static String recordFilesSaves = "records.dat";
+    //private final static String recordFilesSaves = "records.dat";
+    private final static String recordFilesSaves = Config.RECORD_FILENAME;
     private static RecordFileManager instance;
 
     private List<RecordFile> files;
